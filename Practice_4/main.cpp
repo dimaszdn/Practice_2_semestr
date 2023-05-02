@@ -2,21 +2,59 @@
 #include<SmartHome.h>
 #include<vector>
 
+Device* Factory1(DeviceType deviceType, DeviceList deviceList)
+{
+    Device* device = nullptr;
+    switch (deviceType)
+    {
+        case DeviceType::ELECTRIC:
+        {
+            switch (deviceList.electric)
+            {
+                case ELECTRIC::NEVA_MT314:
+                    device = new Neva_MT314;
+                    break;
+            }
+            break;
+        }
+        case DeviceType::SIGNAL:
+            switch (deviceList.signal)
+            {
+                case SIGNAL::REALLAB_NL_16HV:
+                    device = new Reallab_NL_16HV;
+                    break;
+            }
+            break;
+        case DeviceType::HEATING:
+            switch (deviceList.heating)
+            {
+                case HEATING::Ouman_S203:
+                    device = new Ouman_S203;
+                    break;
+            }
+            break;
+    }
+    if (device != nullptr)
+        return device;
+    throw std::logic_error("There is no such device!");
+}
+
 int main()
 {
-    std::vector<Device*> devices;
-    Device* d1 = new Neva_MT314;
-    Device* d2 = new Reallab_NL_16HV;
-    Device* d3 = new Ouman_S203;
-    devices.push_back(d1);
-    devices.push_back(d2);
-    devices.push_back(d3);
+    try
+    {
+        std::vector<Device*> devices;
+        devices.push_back(Factory1(DeviceType::ELECTRIC, {ELECTRIC::MERCURY_230}));
 
-    for (Device* device : devices)
-        device->poll();
+        for (Device* device : devices)
+            device->poll();
 
-    for (int i = 0; i < devices.size(); ++i)
-        delete devices[i];
-
+        for (int i = 0; i < devices.size(); ++i)
+            delete devices[i];
+    }
+    catch(std::exception& ex)
+    {
+        std::cout << ex.what() << "\n";
+    }
     return 0;
 }

@@ -1,6 +1,40 @@
 #pragma once
 #include<string>
 
+enum class DeviceType
+{
+    ELECTRIC,
+    SIGNAL,
+    HEATING
+};
+
+enum class ELECTRIC
+{
+    NEVA_MT314,
+    MERCURY_230,
+    ENERGOMERA_CE308
+};
+
+enum class SIGNAL
+{
+    REALLAB_NL_16HV,
+    PRIBORELECTRO_PRE_16,
+    ENERGOSERVIS_EHMB_1_24
+};
+
+enum class HEATING
+{
+    Ouman_S203,
+    OVEN_TPM232
+};
+
+struct DeviceList
+{
+    ELECTRIC electric;
+    SIGNAL signal;
+    HEATING heating;
+};
+
 class Device
 {
 protected:
