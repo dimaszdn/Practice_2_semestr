@@ -1,38 +1,22 @@
 #pragma once
 #include<string>
 
-enum class DeviceType
-{
-    ELECTRIC,
-    SIGNAL,
-    HEATING
-};
-
-enum class ELECTRIC
+enum class ElectricList
 {
     NEVA_MT314,
     MERCURY_230,
     ENERGOMERA_CE308
 };
-
-enum class SIGNAL
+enum class SignalList
 {
     REALLAB_NL_16HV,
     PRIBORELECTRO_PRE_16,
     ENERGOSERVIS_EHMB_1_24
 };
-
-enum class HEATING
+enum class HeatingList
 {
     Ouman_S203,
     OVEN_TPM232
-};
-
-struct DeviceList
-{
-    ELECTRIC electric;
-    SIGNAL signal;
-    HEATING heating;
 };
 
 class Device
@@ -45,7 +29,7 @@ public:
 
     virtual ~Device() = default;
 
-    void poll()
+    virtual void poll()
     {
         std::cout << m_name << "\n";
     }
@@ -57,6 +41,11 @@ public:
     Electric() : Device() {}
 
     ~Electric() override = default;
+
+    void poll() override
+    {
+        std::cout << m_name << " " << 1 << "\n";
+    }
 };
 
 class Neva_MT314 : public Electric
@@ -75,6 +64,11 @@ public:
     Signal() : Device() {}
 
     ~Signal() override = default;
+
+    void poll() override
+    {
+        std::cout << m_name << " " << 2 << "\n";
+    }
 };
 
 class Reallab_NL_16HV : public Signal
@@ -93,6 +87,11 @@ public:
     Heating() : Device() {}
 
     ~Heating() override = default;
+
+    void poll() override
+    {
+        std::cout << m_name << " " << 3 << "\n";
+    }
 };
 
 class Ouman_S203 : public Heating

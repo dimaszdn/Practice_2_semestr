@@ -2,36 +2,41 @@
 #include<SmartHome.h>
 #include<vector>
 
-Device* Factory1(DeviceType deviceType, DeviceList deviceList)
+Device* Factory(ElectricList electricList)
 {
     Device* device = nullptr;
-    switch (deviceType)
+    switch (electricList)
     {
-        case DeviceType::ELECTRIC:
-        {
-            switch (deviceList.electric)
-            {
-                case ELECTRIC::NEVA_MT314:
-                    device = new Neva_MT314;
-                    break;
-            }
+        case ElectricList::NEVA_MT314:
+            device = new Neva_MT314;
             break;
-        }
-        case DeviceType::SIGNAL:
-            switch (deviceList.signal)
-            {
-                case SIGNAL::REALLAB_NL_16HV:
-                    device = new Reallab_NL_16HV;
-                    break;
-            }
+    }
+    if (device != nullptr)
+        return device;
+    throw std::logic_error("There is no such device!");
+}
+
+Device* Factory(SignalList signalList)
+{
+    Device* device = nullptr;
+    switch (signalList)
+    {
+        case SignalList::REALLAB_NL_16HV:
+            device = new Reallab_NL_16HV;
             break;
-        case DeviceType::HEATING:
-            switch (deviceList.heating)
-            {
-                case HEATING::Ouman_S203:
-                    device = new Ouman_S203;
-                    break;
-            }
+    }
+    if (device != nullptr)
+        return device;
+    throw std::logic_error("There is no such device!");
+}
+
+Device* Factory(HeatingList heatingList)
+{
+    Device* device = nullptr;
+    switch (heatingList)
+    {
+        case HeatingList::Ouman_S203:
+            device = new Ouman_S203;
             break;
     }
     if (device != nullptr)
@@ -44,7 +49,9 @@ int main()
     try
     {
         std::vector<Device*> devices;
-        devices.push_back(Factory1(DeviceType::ELECTRIC, {ELECTRIC::MERCURY_230}));
+        devices.push_back(Factory(ElectricList::NEVA_MT314));
+        devices.push_back(Factory(SignalList::REALLAB_NL_16HV));
+        devices.push_back(Factory(HeatingList::Ouman_S203));
 
         for (Device* device : devices)
             device->poll();
